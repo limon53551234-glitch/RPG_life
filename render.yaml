@@ -1,0 +1,23 @@
+# Деплой Life RPG на render.com
+# Dashboard → New + → Blueprint → подключить репозиторий → Render подхватит этот файл.
+# (Либо вручную: New + → Web Service, настройки такие же, как ниже.)
+services:
+  - type: web
+    name: life-rpg
+    runtime: node
+    plan: free
+    rootDir: life-rpg
+    buildCommand: npm install --omit=dev || true
+    startCommand: node server.js
+    healthCheckPath: /api/health
+    disk:
+      name: life-rpg-data
+      mountPath: /opt/render/project/src/data
+      sizeGB: 1
+    envVars:
+      - key: NODE_VERSION
+        value: 20.11.1
+      - key: SEASON_DAYS
+        value: 5
+      - key: NET_DB
+        value: /opt/render/project/src/data
